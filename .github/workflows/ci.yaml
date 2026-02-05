@@ -15,13 +15,13 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: my-registry.azurecr.io/my-app
+          images: ${{ secrets.ACR }}/nginx
           tags: |
             type=sha,format=short
 
-      - uses: azure/docker-login@v3
+      - uses: docker/login-action@v3
         with:
-          login-server: ${{ secrets.AZURE_URL }}
+          login-server: ${{ secrets.ACR }}
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
