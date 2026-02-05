@@ -1,0 +1,32 @@
+on:
+  push:
+  branches:
+    - master
+  paths:
+    - 'backend/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -  uses: actions/checkout@v3
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: my-registry.azurecr.io/my-app
+          tags: |
+            type=sha,format=short
+
+      - uses: azure/docker-login@v3
+        with:
+          login-server: ${{ secrets.AZURE_URL }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          context: ../backend/
