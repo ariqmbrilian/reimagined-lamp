@@ -15,9 +15,9 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ secrets.ACR }}/nginx
+          images: ${{ secrets.ACR }}/projec-1/nginx
           tags: |
-            type=sha,format=short
+            type=sha,format=short,prefix=
 
       - uses: docker/login-action@v3
         with:
